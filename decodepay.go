@@ -36,6 +36,12 @@ func Decodepay(bolt11 string) (Bolt11, error) {
 		msat = int64(*inv.MilliSat)
 	}
 
+	var payment_address string
+	if inv.PaymentAddr != nil {
+		addr := *inv.PaymentAddr
+		payment_address = hex.EncodeToString(addr[:])
+	}
+
 	var desc string
 	if inv.Description != nil {
 		desc = *inv.Description
@@ -78,6 +84,7 @@ func Decodepay(bolt11 string) (Bolt11, error) {
 		Expiry:             int(inv.Expiry() / time.Second),
 		MinFinalCLTVExpiry: int(inv.MinFinalCLTVExpiry()),
 		Currency:           inv.Net.Bech32HRPSegwit,
+		PaymentAddr:        payment_address,
 		Route:              routes,
 	}, nil
 }
@@ -92,6 +99,7 @@ type Bolt11 struct {
 	DescriptionHash    string  `json:"description_hash,omitempty"`
 	PaymentHash        string  `json:"payment_hash"`
 	MinFinalCLTVExpiry int     `json:"min_final_cltv_expiry"`
+	PaymentAddr        string  `json:"payment_address"`
 	Route              [][]Hop `json:"routes,omitempty"`
 }
 
