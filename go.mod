@@ -1,4 +1,4 @@
-module github.com/nbd-wtf/ln-decodepay
+module github.com/f321x/ln-decodepay
 
 go 1.18
 
